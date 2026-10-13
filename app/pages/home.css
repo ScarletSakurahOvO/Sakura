@@ -1,0 +1,99 @@
+/* 引入 Google Fonts 的 Playfair Display 字体 */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+/* 图片部分 */
+/* 让外层区块撑满视口并隐藏溢出部分 */
+.home-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 让图片保持宽度和高度铺满页面 */
+.home-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 保持图片16：9的比例不失真 */
+  aspect-ratio: 16 / 9;
+  transform: scale(1.1);
+  will-change: transform;
+}
+
+/* 文字logo样式 */
+.logo {
+  position: absolute;
+ /* 顶部边距  */
+ top: 15px;
+ /* 左边距 */
+ left: 60px;
+ /* 字体大小 */
+ font-size: 64px;
+ /* 字体颜色 */
+ color: white;
+ /* 字体在图片上显示 */
+ z-index: 10;
+ /* 字体样式 */
+ font-family: 'PLayfair Display', serif;
+}
+
+/* 右上角容器定位 */
+.nav-links {
+  position: absolute;
+  top: 40px;
+  right: 25px;
+  z-index: 10;
+}
+
+/* 列表横向排列 */
+.nav-links ul {
+  display: flex;
+  list-style: none;
+  gap: 60px;
+  margin: 0;
+  padding: 0;
+}
+
+/* 文字字体样式 */
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 32px;
+  /* 字体样式 */
+  font-family: 'Playfair Display', serif;
+  transition: opacity 0.3s ease;
+}
+
+.nav-links a:hover {
+  opacity: 0.7;
+}
+
+/* 左下角文本容器 */
+.home-text {
+  position: absolute;
+  /* 底边距 */
+  bottom: 20px;
+  /* 左边距 */
+  left: 60px;
+  z-index: 10;
+  color: white;
+  font-family: 'Playfair Display',serif;
+}
+
+/* 第一行 */
+.home-text .quote-title {
+  /* 清除默认边距 */
+  margin: 0 0 10px 0;
+  font-size: 96px;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* 第二行 */
+.home-text .quote-subtitle {
+  margin: 0;
+  font-size: 96px;
+  font-style: italic;
+  font-weight: 400;
+}

@@ -1,0 +1,54 @@
+/* app/assets/css/main.css */
+
+/* 1. 重置盒模型与默认边距 */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. 设置 HTML 及 Body 基础属性 */
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #333;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* 3. 列表样式重置 */
+ul, ol, menu {
+  list-style: none;
+}
+
+/* 4. 链接样式重置 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 5. 图片与媒体元素重置 */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 6. 表单元素继承字体 */
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+/* 7. 表格重置 */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
