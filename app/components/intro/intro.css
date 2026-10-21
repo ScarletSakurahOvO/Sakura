@@ -21,7 +21,7 @@
 
 /* 第一行文字 */
 .main-title {
-  font-size: 64px;
+  font-size: 36px;
   color:black;
   /* font-weight: 500; */
   font-family: 'Playfair Display', serif;
@@ -34,7 +34,7 @@
 
 /* 第二行文字 */
 .main-subtitle {
-  font-size: 64px;
+  font-size: 36px;
   color: #8C7472;
   /* font-weight: 500; */
   font-family: 'Playfair Display', serif;
@@ -42,7 +42,7 @@
 
 /* 第三行文字 */
 .main-thrtitle {
-  font-size: 24px;
+  font-size: 14px;
   color: black;
   font-family: 'Playfair Display', serif;
 }
@@ -54,14 +54,14 @@
 }
 
 .main-fortitle {
-  font-size: 24px;
+  font-size: 14px;
   color: black;
   font-family: 'Playfair Display', serif;
 }
 
 /* 第五行文字 */
 .main-fivtitle {
-  font-size: 24px;
+  font-size: 14px;
   color: black;
   font-family: 'Playfair Display', serif;
 }

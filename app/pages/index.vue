@@ -14,12 +14,9 @@
 
 <template>
   <section>
-    <!-- 首页覆盖图片 -->
-     <div class="home-section">
-      <img ref="imageRef" src="/images/home.webp" alt="home" class="home-image">
-     </div>
 
-     <!-- 左上角logo -->
+    <header class="site-header">
+      <!-- 左上角logo -->
       <div class="logo">Sakura</div>
 
       <!-- 右上角导航栏 -->
@@ -32,16 +29,28 @@
           <li><a href="#">Contact</a></li>
         </ul>
        </nav>
+     </header>
 
-       <!-- 左下角标题 -->
+    <!-- 首页覆盖图片 -->
+     <div class="home-section">
+      <img ref="imageRef" src="/images/home.webp" alt="home" class="home-image">
+     </div>
+
+     <!-- 左下角标题 -->
         <div class="home-text">
           <p class="quote-title">Sometimes</p>
           <p class="quote-subtitle">We all need the courage to face life</p>
         </div>
+        
   </section>
 
   <!-- 引入其他页面 -->
    <div>
     <Intro />
+    <Intro2 />
+    <Intro3 />
+    <About />
+    <Books />
+    <Anime />
    </div>
 </template>

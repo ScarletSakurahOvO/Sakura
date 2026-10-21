@@ -1,0 +1,119 @@
+/* 引入 Google Fonts 的 Playfair Display 字体 */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.about-section {
+  width: 100%;
+  min-height: 100vh; /* 使用 min-height 允许内容向下延伸时自动撑开页面高度 */
+  background-color: #F9F5EE;
+  box-sizing: border-box;
+  overflow-y: auto;  /* 允许垂直滚动 */
+  padding-bottom: 100px; /* 底部留白 */
+}
+
+/* 页面主容器 */
+.about-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部页面标题容器 */
+.about-header {
+  display: flex;
+  align-items: center;
+  gap: 120px;
+  margin-top: 82px;
+  padding-left: 60px;
+  flex-shrink: 0;
+}
+
+/* 顶部标题字体样式 */
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: black;
+  margin: 0;
+}
+
+/* ===========================
+   内容主体容器（宽度 420px 居中）
+   =========================== */
+.profile-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;       /* 让图片和名称在 420px 容器中水平居中 */
+  width: 420px;
+  margin: 40px auto 0 auto;  /* 让整个 420px 模块在页面中水平居中 */
+}
+
+/* 图片样式 */
+.about-image {
+  width: 420px;
+  height: auto;
+  display: block;
+}
+
+/* 名称样式 */
+.profile-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 400;
+  color: black;
+  margin-top: 16px;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+/* ===========================
+   介绍段网格区块（使用 Grid 布局精准对齐）
+   =========================== */
+.intro-block {
+  display: grid;
+  grid-template-columns: auto 1fr; /* 第 1 列给箭头，第 2 列给标题和段落 */
+  column-gap: 30px;              /* 箭头与标题之间的间距保持原样 */
+  align-self: flex-start;        /* 靠左对齐，契合图片左侧边缘 */
+  width: 560px;                  /* 保持文字排版区域宽度 */
+  margin-top: 70px;              /* 模块之间的垂直间距 */
+}
+
+/* 箭头区域（第 1 列，第 1 行） */
+.intro-arrow {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* 介绍段右侧标题样式（第 2 列，第 1 行）- 样式保持原样不动 */
+.intro-title {
+  grid-column: 2;
+  grid-row: 1;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;        
+  font-weight: 400;
+  color: black;
+  margin: 0;
+  align-self: center;
+}
+
+/* ===========================
+   介绍段文字内容样式（第 2 列，第 2 行）
+   =========================== */
+.intro-content {
+  grid-column: 2;             /* 关键点：与标题共享同一列，天然与箭头右侧的文字左边对齐 */
+  grid-row: 2;
+  margin-top: 24px;           /* 与上方标题行的间距 */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;                  /* 段落之间的间距 */
+}
+
+/* 文字段落样式（字体已严格控制为 14px） */
+.intro-content p {
+  font-size: 14px;
+  line-height: 1.8;           /* 增加行高，提升排版呼吸感 */
+  color: #2c2c2c;
+  margin: 0;
+  text-align: left;
+}

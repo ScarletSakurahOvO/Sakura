@@ -1,6 +1,30 @@
 /* 引入 Google Fonts 的 Playfair Display 字体 */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
+/* 模糊导航栏 */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 60px;
+  box-sizing: border-box;
+  /* 确保层级在最上方 */
+  z-index: 1000;
+
+  /* 模糊导航栏背景 */
+  /* 半透明颜色背景 */
+  background-color: rgba(255, 255, 255, 0.08);
+  /* 背景模糊像素 */
+  backdrop-filter: blur(8px);
+  /* 兼容safari */
+  -webkit-backdrop-filter: blur(8px);
+  transition: background-color 0.3s ease;
+}
+
 /* 图片部分 */
 /* 让外层区块撑满视口并隐藏溢出部分 */
 .home-section {
@@ -23,26 +47,17 @@
 
 /* 文字logo样式 */
 .logo {
-  position: absolute;
- /* 顶部边距  */
- top: 15px;
- /* 左边距 */
- left: 60px;
- /* 字体大小 */
- font-size: 64px;
- /* 字体颜色 */
- color: white;
- /* 字体在图片上显示 */
- z-index: 10;
- /* 字体样式 */
- font-family: 'PLayfair Display', serif;
+  /* 由flexbox控制 */
+  font-size: 36px;
+  color: black;
+  font-family: 'Playfair Display', serif;
 }
 
 /* 右上角容器定位 */
 .nav-links {
-  position: absolute;
+  /* position: absolute;
   top: 40px;
-  right: 25px;
+  right: 25px; */
   z-index: 10;
 }
 
@@ -57,9 +72,9 @@
 
 /* 文字字体样式 */
 .nav-links a {
-  color: white;
+  color: black;
   text-decoration: none;
-  font-size: 32px;
+  font-size: 14px;
   /* 字体样式 */
   font-family: 'Playfair Display', serif;
   transition: opacity 0.3s ease;
@@ -85,7 +100,7 @@
 .home-text .quote-title {
   /* 清除默认边距 */
   margin: 0 0 10px 0;
-  font-size: 96px;
+  font-size: 64px;
   font-style: italic;
   font-weight: 400;
 }
@@ -93,7 +108,7 @@
 /* 第二行 */
 .home-text .quote-subtitle {
   margin: 0;
-  font-size: 96px;
+  font-size: 64px;
   font-style: italic;
   font-weight: 400;
 }

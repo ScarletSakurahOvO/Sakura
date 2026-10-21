@@ -1,0 +1,110 @@
+/* 引入 Google Fonts 的 Playfair Display 字体 */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.intro2-section {
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  color: #DDDDDD;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* 页面作为绝对定位基准 */
+}
+
+/* 主容器保持普通文档流，确保头部（箭头和标题）位置绝对不受影响 */
+.intro2-container {
+  width: 100%;
+  height: 100%;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 标题与箭头：保持原有的顶部间距和位置 */
+.intro2-header-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 120px;
+  margin-top: 82px;
+  padding-left: 60px;
+  flex-shrink: 0;
+}
+
+/* 顶部大标题样式 */
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: black;
+  margin: 0;
+}
+
+/* 图片与右侧文字的共同容器：让右侧高度拉伸与图片一致 */
+.intro2-content-area {
+  position: absolute;
+  top: 50%;
+  left: calc(613px - 18.75vw); 
+  transform: translateY(-50%);
+  display: flex;
+  align-items: stretch; /* 让右侧文字容器高度与左侧图片对齐拉伸 */
+  gap: 60px; /* 图片与文字区域的间距 */
+}
+
+/* 图片容器样式 */
+.image-wrapper {
+  width: 18.75vw;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+}
+
+/* 图片样式 */
+.study-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 右侧文字包裹容器：内部上下两端对齐 */
+.text-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 核心：标题在顶、名言整体在底，中间自动撑开 */
+}
+
+/* “应对焦虑”标题 */
+.content-title {
+  font-family: 'Playfair Display' serif;
+  font-size: 40px;
+  font-weight: 400;
+  color: black;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* 名言与作者的包裹整体 */
+.quote-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 引用名言正文 */
+.quote-text {
+  font-family: 'Playfair Display' serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #000000;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 作者信息样式：斜体、粉褐色 */
+.quote-author {
+  font-family: 'Playfair Display' serif;
+  font-size: 20px;
+  font-style: italic;
+  color: #9B7D7B;
+  margin: 0;
+  margin-top: 16px; /* 控制作者与正文的距离 */
+}
