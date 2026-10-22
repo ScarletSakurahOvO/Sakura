@@ -1,114 +1,169 @@
-/* 引入 Google Fonts 的 Playfair Display 字体 */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+/* 引入 Google Fonts 的 Playfair Display 及 SC (Small Caps) 字体 */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
-/* 模糊导航栏 */
-.site-header {
+.home-section {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: #F9F5EE;
+  padding: 90px 60px 40px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* 导航栏整体布局：全屏宽度、纯透明毛玻璃模糊背景、左右内边距与页面对齐 */
+.navbar {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   width: 100%;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 60px;
+  background: transparent; /* 去除所有背景颜色，完全透明 */
+  backdrop-filter: blur(12px); /* 纯毛玻璃模糊效果 */
+  -webkit-backdrop-filter: blur(12px);
+  padding: 15px 60px; /* 左右 padding 保持 60px，与页面的左右边距完美对齐 */
   box-sizing: border-box;
-  /* 确保层级在最上方 */
-  z-index: 1000;
-
-  /* 模糊导航栏背景 */
-  /* 半透明颜色背景 */
-  background-color: rgba(255, 255, 255, 0.08);
-  /* 背景模糊像素 */
-  backdrop-filter: blur(8px);
-  /* 兼容safari */
-  -webkit-backdrop-filter: blur(8px);
-  transition: background-color 0.3s ease;
 }
 
-/* 图片部分 */
-/* 让外层区块撑满视口并隐藏溢出部分 */
-.home-section {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* 让图片保持宽度和高度铺满页面 */
-.home-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* 保持图片16：9的比例不失真 */
-  aspect-ratio: 16 / 9;
-  transform: scale(1.1);
-  will-change: transform;
-}
-
-/* 文字logo样式 */
+/* 左侧 Logo 样式 */
 .logo {
-  /* 由flexbox控制 */
   font-size: 36px;
-  color: black;
   font-family: 'Playfair Display', serif;
+  color: #1a1a1a;
+  font-weight: normal;
 }
 
-/* 右上角容器定位 */
+/* 右侧链接列表 */
 .nav-links {
-  /* position: absolute;
-  top: 40px;
-  right: 25px; */
-  z-index: 10;
-}
-
-/* 列表横向排列 */
-.nav-links ul {
-  display: flex;
   list-style: none;
-  gap: 60px;
+  display: flex;
+  gap: 40px;
   margin: 0;
   padding: 0;
 }
 
-/* 文字字体样式 */
+/* 右侧链接文字样式 */
 .nav-links a {
-  color: black;
-  text-decoration: none;
-  font-size: 14px;
-  /* 字体样式 */
+  font-size: 18px;
   font-family: 'Playfair Display', serif;
-  transition: opacity 0.3s ease;
+  text-decoration: none;
+  color: #1a1a1a;
+  transition: opacity 0.2s ease;
 }
 
 .nav-links a:hover {
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
-/* 左下角文本容器 */
-.home-text {
-  position: absolute;
-  /* 底边距 */
-  bottom: 20px;
-  /* 左边距 */
-  left: 60px;
-  z-index: 10;
-  color: white;
-  font-family: 'Playfair Display',serif;
+/* 中间主标题区域 - 使用 Grid 布局 */
+.hero-container {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  margin: auto 0;
+  padding-bottom: 40px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* 第一行 */
-.home-text .quote-title {
-  /* 清除默认边距 */
-  margin: 0 0 10px 0;
-  font-size: 64px;
-  font-style: italic;
+/* 第一行包装容器（相对定位参考系） */
+.row-top {
+  grid-column: 2 / 3;
+  grid-row: 1;
+  position: relative;
+}
+
+/* 第二行包装容器（相对定位参考系） */
+.row-bottom {
+  grid-column: 2 / 3;
+  grid-row: 2;
+  position: relative;
+  margin-top: -30px;
+}
+
+/* 第二行内容的包裹容器 */
+.sub-wrapper {
+  position: relative;
+  margin-left: 250px;
+  display: inline-block;
+}
+
+/* 第一行主标题（包含问号） */
+.main-title {
+  font-family: 'Playfair Display SC', serif;
+  font-size: 80px;
   font-weight: 400;
-}
-
-/* 第二行 */
-.home-text .quote-subtitle {
+  color: #1a1a1a;
+  letter-spacing: 1px;
   margin: 0;
-  font-size: 64px;
-  font-style: italic;
+  display: flex;
+  align-items: baseline;
+}
+
+/* 独立管理的问号：20px 并与大写字母 G 顶部对齐 */
+.question-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
   font-weight: 400;
+  color: #1a1a1a;
+  margin-left: 8px;
+  position: relative;
+  top: -38px;
+}
+
+/* 第二行副标题 */
+.sub-title {
+  font-family: 'Playfair Display SC', serif;
+  font-size: 80px;
+  font-weight: 400;
+  color: #5E3D3B;
+  letter-spacing: 1px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* 第一句中文（右上侧） */
+.cn-sub-right {
+  position: absolute;
+  right: 0;
+  top: -60px; 
+  font-size: 20px;
+  font-family: serif;
+  color: #1a1a1a;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* 第二句中文（左下侧） */
+.cn-sub-left {
+  position: absolute;
+  left: 0;
+  top: 60px; 
+  font-size: 20px;
+  font-family: serif;
+  color: #1a1a1a;
+  margin: 0;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* 底部三行斜体寄语：精准对齐 SILENT 的 L 字母并留出呼吸间距 */
+.hero-quotes {
+  position: relative;
+  left: 68px; 
+  margin-top: 22px; 
+  white-space: nowrap;
+}
+
+.hero-quotes p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 20px;
+  color: #1a1a1a;
+  margin: 0 0 6px 0;
+  line-height: 1.4;
 }

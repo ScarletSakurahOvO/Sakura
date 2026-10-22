@@ -40,21 +40,21 @@
   margin: 0;
 }
 
-/* 图片与右侧文字的共同容器：让右侧高度拉伸与图片一致 */
+/* 图片与右侧文字的共同容器：左侧对齐 60px，与上方箭头左侧完美对齐 */
 .intro2-content-area {
   position: absolute;
   top: 50%;
-  left: calc(613px - 18.75vw); 
+  left: 60px; 
   transform: translateY(-50%);
   display: flex;
   align-items: stretch; /* 让右侧文字容器高度与左侧图片对齐拉伸 */
   gap: 60px; /* 图片与文字区域的间距 */
 }
 
-/* 图片容器样式 */
+/* 图片容器样式：1920px 设计稿下的 704px 宽度，且为 16:9 比例 */
 .image-wrapper {
-  width: 18.75vw;
-  aspect-ratio: 1 / 1;
+  width: 36.67vw;
+  aspect-ratio: 16 / 9;
   flex-shrink: 0;
 }
 
@@ -75,7 +75,7 @@
 
 /* “应对焦虑”标题 */
 .content-title {
-  font-family: 'Playfair Display' serif;
+  font-family: 'Playfair Display', serif;
   font-size: 40px;
   font-weight: 400;
   color: black;
@@ -91,7 +91,7 @@
 
 /* 引用名言正文 */
 .quote-text {
-  font-family: 'Playfair Display' serif;
+  font-family: 'Playfair Display', serif;
   font-size: 20px;
   font-weight: 400;
   color: #000000;
@@ -101,7 +101,7 @@
 
 /* 作者信息样式：斜体、粉褐色 */
 .quote-author {
-  font-family: 'Playfair Display' serif;
+  font-family: 'Playfair Display', serif;
   font-size: 20px;
   font-style: italic;
   color: #9B7D7B;
