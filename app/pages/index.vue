@@ -50,6 +50,7 @@
     <About />
     <Books />
     <Anime />
+    <Contact />
   </div>
 </template>
 
