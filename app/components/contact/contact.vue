@@ -1,5 +1,5 @@
 <script setup>
-import Arrow5 from './arrow_5.vue';
+import Arrow from './arrow.vue';
 </script>
 
 <template>
@@ -15,7 +15,7 @@ import Arrow5 from './arrow_5.vue';
         </h2>
         <div class="grid grid-cols-[220px_1fr] items-center mt-[25px]">
           <div class="flex items-center">
-            <Arrow5 />
+            <Arrow />
           </div>
           <div class="flex items-center">
             <p class="font-serif text-[20px] text-[#1a1a1a] m-0 leading-[24px]">

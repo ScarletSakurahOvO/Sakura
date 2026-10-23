@@ -1,5 +1,5 @@
 <script setup>
-import Arrow3 from './arrow_3.vue';
+import Arrow from './arrow.vue';
 </script>
 
 <template>
@@ -15,7 +15,7 @@ import Arrow3 from './arrow_3.vue';
       <!-- 标题与箭头区域 -->
       <div class="col-start-2 col-end-5 flex items-center gap-[120px] mt-[72px] shrink-0">
         <!-- 引入箭头 -->
-        <Arrow3 />
+        <Arrow />
         <!-- 箭头指向文字 -->
         <p class="font-['Playfair_Display'] text-[32px] font-normal text-black m-0">
           What I'm looking for

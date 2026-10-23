@@ -1,5 +1,5 @@
 <script setup>
-import Arrow2 from './arrow_2.vue';
+import Arrow from './arrow.vue';
 </script>
 
 <template>
@@ -14,7 +14,7 @@ import Arrow2 from './arrow_2.vue';
                mt-[82px] pl-[60px] shrink-0"
       >
         <!-- 引入横向箭头组件 -->
-        <Arrow2 />
+        <Arrow />
 
         <!-- 箭头指向文字 -->
         <p class="font-['Playfair_Display'] text-[32px] font-normal text-black m-0">
