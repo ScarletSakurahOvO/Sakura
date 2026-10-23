@@ -1,7 +1,7 @@
 <template>
-  <div class="arrow-container">
+  <div class="flex justify-start">
     <svg
-      class="arrow-svg"
+      class="w-[106px] h-[24px]"
       viewBox="0 0 106 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -13,15 +13,3 @@
     </svg>
   </div>
 </template>
-
-<style scoped>
-.arrow-container {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.arrow-svg {
-  width: 106px;
-  height: 24px;
-}
-</style>

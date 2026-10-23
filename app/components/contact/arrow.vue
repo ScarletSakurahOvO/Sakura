@@ -1,7 +1,7 @@
 <template>
-  <div class="arrow-container">
+  <div class="flex items-center">
     <svg
-      class="arrow-svg"
+      class="w-[200px] h-[24px]"
       viewBox="0 0 200 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -13,15 +13,3 @@
     </svg>
   </div>
 </template>
-
-<style scoped>
-.arrow-container {
-  display: flex;
-  align-items: center;
-}
-
-.arrow-svg {
-  width: 200px;
-  height: 24px;
-}
-</style>
