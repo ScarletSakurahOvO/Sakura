@@ -1,3 +1,7 @@
+<script setup>
+import Arrow from './arrow.vue'
+</script>
+
 <template>
   <section class="contact-section">
     <!-- 双列 Grid 布局内容 -->

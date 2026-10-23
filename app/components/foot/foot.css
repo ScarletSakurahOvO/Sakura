@@ -2,18 +2,22 @@
 
 .foot-section {
   width: 100%;
-  height: 60vh;
+  height: 100vh;
   box-sizing: border-box;
   background-color: #E4DAD4;
-  /* 整体容器统一采用 Grid 布局，划分为三行：顶部内容、中间弹性区、底部栏 */
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  justify-items: center;
-  align-items: start;
-  padding: 60px 60px 20px;
+  position: fixed; /* 恢复固定定位在视口底层，彻底消除白边 */
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  /* 已移除冲突的 position: relative */
 }
 
+/* 1. 顶部 Logo 和导航：精准定位在露出区域的上方（top: 46vh） */
 .foot-content {
+  position: absolute;
+  top: 46vh; /* 刚好在 40vh 遮挡分界线下方，完美露在可视区内 */
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,9 +54,12 @@
   opacity: 0.6;
 }
 
-/* 中间 Email：换成 Playfair Display 并加粗，与 Sakura 标题质感对齐 */
+/* 2. 中间 Email：定位在露出的 60% 区域的中下部（top: 72vh） */
 .foot-email {
-  align-self: center;
+  position: absolute;
+  top: 72vh;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: 'Playfair Display', serif;
   font-size: 14px;
   font-weight: 600;
@@ -60,13 +67,16 @@
   margin: 0;
 }
 
-/* 底部三组文本容器：采用嵌套 Grid 布局精准对齐 */
+/* 3. 底部三组文本容器：稳稳贴在最底部 */
 .foot-bottom {
-  width: 100%;
+  position: absolute;
+  bottom: 20px;
+  left: 60px;
+  right: 60px;
+  width: auto;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  align-self: end;
   font-family: serif;
   font-size: 14px;
   color: #1a1a1a;

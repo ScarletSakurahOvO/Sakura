@@ -5,9 +5,11 @@
   width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
-  background-color: #F9F5EE;
+  background-color: #F9F5EE; /* 实体背景色，用于盖住底部的 foot[cite: 9] */
   padding: 68px 60px 40px; 
   position: relative;
+  z-index: 2;                /* 层级高于 foot[cite: 9] */
+  margin-bottom: 60vh;       /* 核心：为短页面强制预留 60vh 滚动空间，确保能通过 Lenis 丝滑揭开页尾 */
 }
 
 /* 整体双列 Grid 布局：适当增大列间距，拉开左右距离 */

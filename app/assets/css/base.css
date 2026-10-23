@@ -7,18 +7,20 @@
   padding: 0;
 }
 
-/* 2. 设置 HTML 及 Body 基础属性 */
+/* 2. 设置 HTML 及 Body 基础属性（全局统一管理底层页尾遮罩与留白） */
 html, body {
-  height: 100%;
+  min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #333;
-  background-color: #fff;
+  background-color: transparent; /* 必须为透明，才能让底部的固定页尾在底部留白处透出来 */
   margin: 0;
   padding: 0;
+  padding-bottom: 60vh;      /* 全局核心：整页底部统一预留 60vh，配合 Lenis 滚动到底部时正好露出 100vh 页尾的 60% */
   overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 /* 3. 列表样式重置 */
