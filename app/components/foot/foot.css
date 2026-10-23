@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.foot-section {
+  width: 100%;
+  height: 60vh;
+  box-sizing: border-box;
+  background-color: #E4DAD4;
+  /* 整体容器统一采用 Grid 布局，划分为三行：顶部内容、中间弹性区、底部栏 */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  align-items: start;
+  padding: 60px 60px 20px;
+}
+
+.foot-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* 48px 大标题 */
+.foot-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* 导航链接 (16px) */
+.foot-links {
+  display: flex;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.foot-links a {
+  font-family: serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.foot-links a:hover {
+  opacity: 0.6;
+}
+
+/* 中间 Email：换成 Playfair Display 并加粗，与 Sakura 标题质感对齐 */
+.foot-email {
+  align-self: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* 底部三组文本容器：采用嵌套 Grid 布局精准对齐 */
+.foot-bottom {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  align-self: end;
+  font-family: serif;
+  font-size: 14px;
+  color: #1a1a1a;
+}
+
+.foot-bottom-left {
+  justify-self: start;
+  margin: 0;
+}
+
+.foot-bottom-center {
+  justify-self: center;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.foot-bottom-right {
+  justify-self: end;
+  margin: 0;
+}
+
+.foot-bottom-right a {
+  color: #1a1a1a;
+  text-decoration: underline;
+}
+
+.foot-bottom-center:hover,
+.foot-bottom-right a:hover {
+  opacity: 0.6;
+}

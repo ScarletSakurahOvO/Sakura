@@ -1,6 +1,10 @@
+<script setup>
+// 不需要写任何 import 语句，Nuxt 会自动导入 components 文件夹下的组件！
+</script>
+
 <template>
   <section class="home-section">
-    <!-- 导航栏：全局固定贴顶、毛玻璃模糊背景 -->
+    <!-- 导航栏 -->
     <nav class="navbar">
       <div class="logo">Sakura</div>
       <ul class="nav-links">
@@ -12,26 +16,21 @@
       </ul>
     </nav>
 
-    <!-- 中间主标题区域 -->
+    <!-- 主标题区域 -->
     <div class="hero-container">
-      <!-- 第一行容器：包含第一行英文标题 -->
       <div class="hero-row row-top">
         <p class="main-title">
           SKY ALL-KNOWING<span class="question-mark">?</span>
         </p>
       </div>
 
-      <!-- 第二行容器：包含第二行英文 及 两句中文子标题 -->
       <div class="hero-row row-bottom">
-        <!-- 左下中文：它不语，但包罗万象 -->
         <p class="cn-sub-left">它不语，但包罗万象</p>
         
         <div class="sub-wrapper">
-          <!-- 右上中文：天空是否知晓一切 -->
           <p class="cn-sub-right">天空是否知晓一切</p>
           <p class="sub-title">SILENT YET HOLDING ALL</p>
           
-          <!-- 底部三行斜体寄语：内嵌在 sub-wrapper 中以实现对齐 -->
           <div class="hero-quotes">
             <p>Sometimes We all need the courage to face life.</p>
             <p>It takes a gentle heart to carry the weight of hard times</p>
@@ -42,8 +41,8 @@
     </div>
   </section>
 
-  <!-- 引入其他页面 -->
-  <div>
+  <!-- 直接使用组件标签即可 -->
+  <main class="page-container">
     <Intro />
     <Intro2 />
     <Intro3 />
@@ -51,9 +50,15 @@
     <Books />
     <Anime />
     <Contact />
-  </div>
+    <Foot />
+  </main>
 </template>
 
 <style scoped>
 @import './home.css';
+
+.page-container {
+  width: 100%;
+  position: relative;
+}
 </style>
