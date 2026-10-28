@@ -43,12 +43,10 @@
 
   <!-- 页面后续正文内容区域 -->
   <main class="w-full relative">
-    <IntroHeader />
-    <IntroContent />
-    <IntroQuote />
     <About />
+    <IntroQuote />
     <Books />
-    <Contact />
+    <IntroContent />
     <Foot />
   </main>
 </template>
