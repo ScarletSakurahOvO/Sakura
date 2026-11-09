@@ -16,6 +16,14 @@ export default defineNuxtConfig({
     '~/assets/css/main.css',
   ],
 
+  // 组件自动注册配置：关闭子文件夹路径前缀
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false, // 允许直接使用 <About />、<Picture /> 等文件名作为组件名
+    },
+  ],
+
   // 挂载 Tailwind CSS v4 Vite 插件
   vite: {
     plugins: [
