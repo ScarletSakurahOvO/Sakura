@@ -1,15 +1,12 @@
-/* Tailwind CSS v4 统一引入方式（自动包含 preflight 重置和工具类） */
 @import "tailwindcss";
 
-/* 自定义 Base / 全局重置与基准样式 */
 @layer base {
-  /* 基础渲染优化与平滑滚动（移除 overflow-x: hidden，避免破坏 sticky 机制） */
+  /* 基础渲染优化与平滑滚动（已彻底移除导致卡死的 scroll-snap-type） */
   html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* 页面默认背景色、字体颜色与平滑渲染 */
   body {
     @apply bg-white text-neutral-900 antialiased;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -17,13 +14,11 @@
       "Segoe UI Emoji", "Segoe UI Symbol";
   }
 
-  /* 统一链接样式：默认继承父级颜色且无下划线 */
   a {
     color: inherit;
     text-decoration: none;
   }
 
-  /* 图片与多媒体元素保持块级并自适应容器 */
   img, svg, video, canvas, audio, iframe, embed, object {
     display: block;
   }

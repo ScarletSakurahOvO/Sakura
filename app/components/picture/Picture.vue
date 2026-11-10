@@ -17,7 +17,7 @@ const {
   handlePointerUp
 } = usePicture()
 
-// --- 弹窗状态 ---
+// --- 弹窗与动效相关状态 ---
 const activeItem = ref<GalleryItem | null>(null)
 const originRect = ref<DOMRect | null>(null)
 const isClosing = ref(false)
@@ -45,13 +45,11 @@ const onOverlayPointerMove = (e: MouseEvent) => {
 
 // 2. 打开弹窗：FLIP 无缝起飞 + 角色台词播放 + 时序淡入文字
 const openPreview = async (payload: { item: GalleryItem; rect: DOMRect }) => {
-  // 切断前一个可能正在播放的音频
   if (currentAudio) {
     currentAudio.pause()
     currentAudio = null
   }
 
-  // 播放对应角色的语音台词
   if (payload.item.audio) {
     currentAudio = new Audio(payload.item.audio)
     currentAudio.play().catch(() => {})
@@ -63,7 +61,6 @@ const openPreview = async (payload: { item: GalleryItem; rect: DOMRect }) => {
   await nextTick()
   if (!overlayRef.value || !previewImgRef.value || !infoRef.value) return
 
-  // 游标初始瞬移至点击中心
   if (cursorRef.value) {
     gsap.set(cursorRef.value, {
       xPercent: -50,
@@ -73,7 +70,6 @@ const openPreview = async (payload: { item: GalleryItem; rect: DOMRect }) => {
     })
   }
 
-  // 测量居中目标尺寸，计算 FLIP 逆向偏差
   const targetRect = previewImgRef.value.getBoundingClientRect()
   const deltaX = payload.rect.left - targetRect.left
   const deltaY = payload.rect.top - targetRect.top
@@ -81,10 +77,8 @@ const openPreview = async (payload: { item: GalleryItem; rect: DOMRect }) => {
 
   const tl = gsap.timeline()
 
-  // 阶段 1：纯模糊遮罩淡入（无颜色叠加）
   tl.fromTo(overlayRef.value, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power2.out' }, 0)
 
-  // 阶段 1：图片从卡片初始绝对位置起飞至屏幕中央，并等比适度放大
   tl.fromTo(
     previewImgRef.value,
     {
@@ -103,7 +97,6 @@ const openPreview = async (payload: { item: GalleryItem; rect: DOMRect }) => {
     0
   )
 
-  // 阶段 2：图片位移彻底停稳后，文字从无到有缓慢淡入（0.8s 柔和呈现）
   tl.fromTo(
     infoRef.value,
     {
@@ -124,7 +117,6 @@ const closePreview = () => {
   if (isClosing.value || !activeItem.value || !previewImgRef.value || !overlayRef.value) return
   isClosing.value = true
 
-  // 语音跟随退出动画平滑淡出并暂停
   if (currentAudio) {
     const audioToFade = currentAudio
     gsap.to(audioToFade, {
@@ -144,12 +136,10 @@ const closePreview = () => {
     }
   })
 
-  // 文字快速隐去
   if (infoRef.value) {
     tl.to(infoRef.value, { opacity: 0, duration: 0.15, ease: 'power2.in' }, 0)
   }
 
-  // 大图倒放缩回画廊对应原图位置
   if (originRect.value) {
     const targetRect = previewImgRef.value.getBoundingClientRect()
     const deltaX = originRect.value.left - targetRect.left
@@ -166,21 +156,21 @@ const closePreview = () => {
     }, 0.05)
   }
 
-  // 纯毛玻璃背景淡出
   tl.to(overlayRef.value, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.1)
 }
 </script>
 
 <template>
-  <div
-    ref="viewportRef"
-    class="relative z-10 w-full h-screen overflow-hidden select-none bg-[#FAFAFA]"
-    :class="isDragging ? 'cursor-grabbing' : 'cursor-grab'"
-    @pointerdown="handlePointerDown"
-    @pointermove="handlePointerMove"
-    @pointerup="handlePointerUp"
-    @pointercancel="handlePointerUp"
-  >
+  <div class="relative w-full h-[140vh]">
+    <div
+      ref="viewportRef"
+      class="sticky top-0 z-10 w-full h-screen overflow-hidden select-none bg-[#FAFAFA]"
+      :class="isDragging ? 'cursor-grabbing' : 'cursor-grab'"
+      @pointerdown="handlePointerDown"
+      @pointermove="handlePointerMove"
+      @pointerup="handlePointerUp"
+      @pointercancel="handlePointerUp"
+    >
     <!-- 无限循环画布九宫格 -->
     <div ref="stageRef" class="absolute left-0 top-0 will-change-transform">
       <div
@@ -195,7 +185,7 @@ const closePreview = () => {
       </div>
     </div>
 
-    <!-- 全屏纯透明毛玻璃遮罩 -->
+    <!-- 全屏纯透明毛玻璃遮罩与 Lightbox 居中容器 -->
     <div
       v-if="activeItem"
       ref="overlayRef"
@@ -211,26 +201,25 @@ const closePreview = () => {
           class="max-w-[70vw] max-h-[65vh] w-auto h-auto object-contain shadow-2xl rounded-sm will-change-transform"
         />
 
-        <!-- 文字信息：统一使用 Google Sans Flex 族与 #906E6C 色号 -->
-        <div
+         <div
           ref="infoRef"
           class="mt-6 flex flex-col items-center text-center opacity-0 pointer-events-none"
-        >
-          <p class="text-[#906E6C] text-[26px] font-bold tracking-wide font-['Google_Sans_Flex',sans-serif]">
-            {{ activeItem.title }}
-          </p>
-          <p class="mt-[5px] text-[#906E6C] text-[24px] font-light max-w-lg leading-relaxed font-['Google_Sans_Flex',sans-serif]">
-            {{ activeItem.desc }}
-          </p>
+         >
+            <p class="text-[#906E6C] text-[26px] font-bold tracking-wide font-['Google_Sans_Flex',sans-serif]">
+              {{ activeItem.title }}
+            </p>
+            <p class="mt-[5px] text-[#906E6C] text-[24px] font-light max-w-lg leading-relaxed font-['Google_Sans_Flex',sans-serif]">
+              {{ activeItem.desc }}
+            </p>
+          </div>
         </div>
-      </div>
 
-      <!-- #906E6C 色的 “go back” 跟随光标（带 0.28s 阻尼拖曳感） -->
-      <div
-        ref="cursorRef"
-        class="pointer-events-none fixed left-0 top-0 z-[60] text-[#906E6C] text-[16px] font-semibold tracking-[0.25em] whitespace-nowrap uppercase select-none drop-shadow-sm font-sans"
-      >
-        go back
+        <div
+          ref="cursorRef"
+          class="pointer-events-none fixed left-0 top-0 z-[60] text-[#906E6C] text-[16px] font-semibold tracking-[0.25em] whitespace-nowrap uppercase select-none drop-shadow-sm font-sans"
+        >
+          go back
+        </div>
       </div>
     </div>
   </div>
