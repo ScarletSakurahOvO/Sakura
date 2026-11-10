@@ -1,18 +1,22 @@
 <script setup lang="ts">
-// 8 张图片均匀散布：消除过度膨胀，各图高低错落
-const galmeImagesList = [
-  // --- 展区核心组（5 张） ---
-  { id: 1, src: '/images/galme1.webp', x: 60,   y: 80,  w: 260 }, // 左侧偏上（温迪）
-  { id: 2, src: '/images/galme2.webp', x: 960,  y: -180,  w: 290 }, // 正上立绘（钟离：等比自适应，避开标题）
-  { id: 3, src: '/images/galme3.webp', x: 1360, y: 260,  w: 340 }, // 右侧主图（雷电将军）
-  { id: 4, src: '/images/galme4.webp', x: 340,  y: 760,  w: 340 }, // 正下横图（纳西妲）
-  { id: 5, src: '/images/galme5.webp', x: 960,  y: 800,  w: 360 }, // 右下横图（芙宁娜）
 
-  // --- 边缘过渡跳板组（3 张） ---
-  { id: 6, src: '/images/galme6.webp', x: 1680, y: 860,  w: 300 }, // 右下路跳板（通向下个切片）
-  { id: 7, src: '/images/galme7.webp', x: 1740, y: -50,  w: 280 }, // 右上路跳板（通向下个切片）
-  { id: 8, src: '/images/galme8.webp', x: -190, y: 490,  w: 230 }  // 左中路跳板（少女立绘：恰好处于两岛正中视线区）
-]
+import { galmeImages as galmeImagesList } from './data/galme'
+import type { GalleryItem } from './types'
+
+// 向父组件 Picture.vue 抛出预览事件（携带图片对象与屏幕几何位置）
+const emit = defineEmits<{
+  (e: 'preview', payload: { item: GalleryItem; rect: DOMRect }): void
+}>()
+
+// 点击时提取当前图片卡片的屏幕绝对包围盒
+const onImageClick = (e: MouseEvent, item: GalleryItem) => {
+  const el = e.currentTarget as HTMLElement
+  emit('preview', {
+    item,
+    rect: el.getBoundingClientRect()
+  })
+}
+
 </script>
 
 <template>
@@ -39,16 +43,17 @@ const galmeImagesList = [
     <div
       v-for="item in galmeImagesList"
       :key="item.id"
-      class="absolute overflow-hidden bg-[#E5E5E5] transition-shadow duration-300 hover:shadow-lg pointer-events-auto"
+      class="absolute overflow-hidden bg-[#E5E5E5] transition-shadow duration-300 hover:shadow-lg pointer-events-auto cursor-pointer"
       :style="{
         left: `${item.x}px`,
         top: `${item.y}px`,
         width: `${item.w}px`,
       }"
+        @click="onImageClick($event, item)" 
     >
       <img
         :src="item.src"
-        :alt="'Galme ' + item.id"
+        :alt="item.title"
         class="block w-full h-auto object-contain pointer-events-none"
         loading="lazy"
       />

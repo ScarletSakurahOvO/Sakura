@@ -3,7 +3,7 @@
 
 /* 自定义 Base / 全局重置与基准样式 */
 @layer base {
-  /* 基础渲染优化与平滑滚动 */
+  /* 基础渲染优化与平滑滚动（移除 overflow-x: hidden，避免破坏 sticky 机制） */
   html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
@@ -23,7 +23,7 @@
     text-decoration: none;
   }
 
-  /* 图片与多媒体元素保持块级并自适应容器（去掉了无效的 vertical-align） */
+  /* 图片与多媒体元素保持块级并自适应容器 */
   img, svg, video, canvas, audio, iframe, embed, object {
     display: block;
   }

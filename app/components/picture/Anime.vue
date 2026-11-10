@@ -1,17 +1,21 @@
 <script setup lang="ts">
-// 7 张图片均匀散布：核心区围绕标题，边缘图延伸为过渡走廊
-const imagesList = [
-  // --- 展区核心组（5 张） ---
-  { id: 1, src: '/images/anime1.webp', x: 180,  y: -80, w: 230 }, // 左上立绘（抚子）
-  { id: 2, src: '/images/anime2.webp', x: 860,  y: -150, w: 360 }, // 正上横图（缆车）
-  { id: 3, src: '/images/anime3.webp', x: -80,  y: 420, w: 260 }, // 最左侧横图（左侧回环过渡）
-  { id: 4, src: '/images/anime4.webp', x: 440,  y: 780, w: 380 }, // 正下横图（月夜）
-  { id: 5, src: '/images/anime5.webp', x: 1300, y: 220, w: 330 }, // 右侧主图（吃零食）
 
-  // --- 东侧过渡跳板组（2 张，与 Galme 交界） ---
-  { id: 6, src: '/images/anime6.webp', x: 1520, y: 760, w: 320 }, // 右下路跳板（下沉托底）
-  { id: 7, src: '/images/anime7.webp', x: 1780, y: -80, w: 270 }  // 右上路跳板（高位探出）
-]
+import { animeImages } from './data/anime'
+import type { GalleryItem } from './types'
+
+// 更新事件定义：除了图片数据 item，还携带点击时刻的视口几何位置 rect
+const emit = defineEmits<{
+  (e: 'preview', payload: { item: GalleryItem; rect: DOMRect }): void
+}>()
+
+// 点击时提取当前图片卡片的屏幕绝对包围盒
+const onImageClick = (e: MouseEvent, item: GalleryItem) => {
+  const el = e.currentTarget as HTMLElement
+  emit('preview', {
+    item,
+    rect: el.getBoundingClientRect()
+  })
+}
 </script>
 
 <template>
@@ -34,23 +38,25 @@ const imagesList = [
     </div>
 
     <!-- 2. 7 张非对称画廊图片 -->
+    <!-- 修改前：v-for 绑定的旧数组，没有点击事件 -->
+    <!-- 修改后： -->
     <div
-      v-for="item in imagesList"
+      v-for="item in animeImages"
       :key="item.id"
-      class="absolute overflow-hidden bg-[#E5E5E5] transition-shadow duration-300 hover:shadow-lg pointer-events-auto"
+      class="absolute overflow-hidden bg-[#E5E5E5] transition-all duration-300 hover:shadow-lg pointer-events-auto cursor-pointer"
       :style="{
-        left: `${item.x}px`,
-        top: `${item.y}px`,
-        width: `${item.w}px`,
-      }"
+      left: `${item.x}px`,
+      top: `${item.y}px`,
+      width: `${item.w}px`,
+     }"
+      @click="onImageClick($event, item)"
     >
-      <img
-        :src="item.src"
-        :alt="'Anime ' + item.id"
-        class="block w-full h-auto object-contain pointer-events-none"
-        loading="lazy"
-      />
-    </div>
-
+    <img
+      :src="item.src"
+      :alt="item.title"
+      class="block w-full h-auto object-contain pointer-events-none"
+      loading="lazy"
+    />
+</div>
   </div>
 </template>

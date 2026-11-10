@@ -1,22 +1,12 @@
 <script setup lang="ts">
-
+import { ref, nextTick } from 'vue'
+import gsap from 'gsap'
 import { usePicture } from './usePicture'
 import Anime from './Anime.vue'
 import Galme from './Galme.vue'
 import Tokyo from './Tokyo.vue'
+import type { GalleryItem } from './types'
 
-useHead({
-  link: [
-    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-    {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@700;800&display=swap'
-    }
-  ]
-})
-
-// 引入动效与拖拽逻辑
 const {
   stageRef,
   viewportRef,
@@ -27,39 +17,221 @@ const {
   handlePointerUp
 } = usePicture()
 
+// --- 弹窗状态 ---
+const activeItem = ref<GalleryItem | null>(null)
+const originRect = ref<DOMRect | null>(null)
+const isClosing = ref(false)
+
+// --- DOM 节点引用 ---
+const overlayRef = ref<HTMLElement | null>(null)
+const previewImgRef = ref<HTMLElement | null>(null)
+const infoRef = ref<HTMLElement | null>(null)
+const cursorRef = ref<HTMLElement | null>(null)
+
+// --- 音频实例管理 ---
+let currentAudio: HTMLAudioElement | null = null
+
+// 1. 光标跟随：0.28s 阻尼平滑延迟跟随
+const onOverlayPointerMove = (e: MouseEvent) => {
+  if (!cursorRef.value) return
+  gsap.to(cursorRef.value, {
+    x: e.clientX,
+    y: e.clientY,
+    duration: 0.28,
+    ease: 'power2.out',
+    overwrite: 'auto'
+  })
+}
+
+// 2. 打开弹窗：FLIP 无缝起飞 + 角色台词播放 + 时序淡入文字
+const openPreview = async (payload: { item: GalleryItem; rect: DOMRect }) => {
+  // 切断前一个可能正在播放的音频
+  if (currentAudio) {
+    currentAudio.pause()
+    currentAudio = null
+  }
+
+  // 播放对应角色的语音台词
+  if (payload.item.audio) {
+    currentAudio = new Audio(payload.item.audio)
+    currentAudio.play().catch(() => {})
+  }
+
+  activeItem.value = payload.item
+  originRect.value = payload.rect
+
+  await nextTick()
+  if (!overlayRef.value || !previewImgRef.value || !infoRef.value) return
+
+  // 游标初始瞬移至点击中心
+  if (cursorRef.value) {
+    gsap.set(cursorRef.value, {
+      xPercent: -50,
+      yPercent: -50,
+      x: payload.rect.left + payload.rect.width / 2,
+      y: payload.rect.top + payload.rect.height / 2
+    })
+  }
+
+  // 测量居中目标尺寸，计算 FLIP 逆向偏差
+  const targetRect = previewImgRef.value.getBoundingClientRect()
+  const deltaX = payload.rect.left - targetRect.left
+  const deltaY = payload.rect.top - targetRect.top
+  const scale = payload.rect.width / targetRect.width
+
+  const tl = gsap.timeline()
+
+  // 阶段 1：纯模糊遮罩淡入（无颜色叠加）
+  tl.fromTo(overlayRef.value, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'power2.out' }, 0)
+
+  // 阶段 1：图片从卡片初始绝对位置起飞至屏幕中央，并等比适度放大
+  tl.fromTo(
+    previewImgRef.value,
+    {
+      x: deltaX,
+      y: deltaY,
+      scale: scale,
+      transformOrigin: 'top left'
+    },
+    {
+      x: 0,
+      y: 0,
+      scale: 1,
+      duration: 0.5,
+      ease: 'power3.out'
+    },
+    0
+  )
+
+  // 阶段 2：图片位移彻底停稳后，文字从无到有缓慢淡入（0.8s 柔和呈现）
+  tl.fromTo(
+    infoRef.value,
+    {
+      opacity: 0,
+      y: 10
+    },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power2.out'
+    }
+  )
+}
+
+// 3. 关闭弹窗：语音平滑淡出 + 文字隐去 + 图片缩回原位
+const closePreview = () => {
+  if (isClosing.value || !activeItem.value || !previewImgRef.value || !overlayRef.value) return
+  isClosing.value = true
+
+  // 语音跟随退出动画平滑淡出并暂停
+  if (currentAudio) {
+    const audioToFade = currentAudio
+    gsap.to(audioToFade, {
+      volume: 0,
+      duration: 0.3,
+      onComplete: () => {
+        audioToFade.pause()
+      }
+    })
+    currentAudio = null
+  }
+
+  const tl = gsap.timeline({
+    onComplete: () => {
+      activeItem.value = null
+      isClosing.value = false
+    }
+  })
+
+  // 文字快速隐去
+  if (infoRef.value) {
+    tl.to(infoRef.value, { opacity: 0, duration: 0.15, ease: 'power2.in' }, 0)
+  }
+
+  // 大图倒放缩回画廊对应原图位置
+  if (originRect.value) {
+    const targetRect = previewImgRef.value.getBoundingClientRect()
+    const deltaX = originRect.value.left - targetRect.left
+    const deltaY = originRect.value.top - targetRect.top
+    const scale = originRect.value.width / targetRect.width
+
+    tl.to(previewImgRef.value, {
+      x: deltaX,
+      y: deltaY,
+      scale: scale,
+      opacity: 0,
+      duration: 0.4,
+      ease: 'power3.inOut'
+    }, 0.05)
+  }
+
+  // 纯毛玻璃背景淡出
+  tl.to(overlayRef.value, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0.1)
+}
 </script>
 
 <template>
-  <section class="relative z-10 min-h-screen w-full bg-[#FFFFFF] shadow-[0_-20px_50px_rgba(0,0,0,0.05)]">
-    <!-- 摄像机视口：裁切多余边界，隐藏原生滚动条 -->
-    <div 
+  <div
     ref="viewportRef"
-    class="relative h-screen w-full overflow-hidden select-none touch-none"
+    class="relative z-10 w-full h-screen overflow-hidden select-none bg-[#FAFAFA]"
     :class="isDragging ? 'cursor-grabbing' : 'cursor-grab'"
     @pointerdown="handlePointerDown"
     @pointermove="handlePointerMove"
     @pointerup="handlePointerUp"
-    @pointercancel="handlePointerUp">
-      
-      <!-- 虚拟舞台（后续拖拽与 GSAP 整体移动该容器） -->
-      <div ref="stageRef" class="relative h-full w-full will-change-transform">
-        <!-- 3*3九宫格瓦片平铺容器 -->
+    @pointercancel="handlePointerUp"
+  >
+    <!-- 无限循环画布九宫格 -->
+    <div ref="stageRef" class="absolute left-0 top-0 will-change-transform">
+      <div
+        v-for="chunk in chunkList"
+        :key="chunk.id"
+        class="absolute left-0 top-0 will-change-transform"
+        :style="{ width: '6600px', height: '1600px' }"
+      >
+        <Anime @preview="openPreview" />
+        <Galme @preview="openPreview" />
+        <Tokyo @preview="openPreview" />
+      </div>
+    </div>
+
+    <!-- 全屏纯透明毛玻璃遮罩 -->
+    <div
+      v-if="activeItem"
+      ref="overlayRef"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center backdrop-blur-md cursor-none select-none"
+      @pointermove="onOverlayPointerMove"
+      @click="closePreview"
+    >
+      <div class="relative flex flex-col items-center max-w-[85vw] max-h-[85vh]">
+        <img
+          ref="previewImgRef"
+          :src="activeItem.src"
+          :alt="activeItem.title"
+          class="max-w-[70vw] max-h-[65vh] w-auto h-auto object-contain shadow-2xl rounded-sm will-change-transform"
+        />
+
+        <!-- 文字信息：统一使用 Google Sans Flex 族与 #906E6C 色号 -->
         <div
-          v-for="chunk in chunkList"
-          :key="chunk.id"
-          class="absolute left-0 top-0 pointer-events-none will-change-transform"
-       >
-          <!-- 1. Anime 标题区块（保持原有排版） -->
-          <Anime />
-
-          <!-- 2. galme 标题区块（向右偏移 2400px） -->
-          <Galme />
-
-          <!-- 3. Tokyo 标题区块（向右偏移 4400px） -->
-          <Tokyo />
+          ref="infoRef"
+          class="mt-6 flex flex-col items-center text-center opacity-0 pointer-events-none"
+        >
+          <p class="text-[#906E6C] text-[26px] font-bold tracking-wide font-['Google_Sans_Flex',sans-serif]">
+            {{ activeItem.title }}
+          </p>
+          <p class="mt-[5px] text-[#906E6C] text-[24px] font-light max-w-lg leading-relaxed font-['Google_Sans_Flex',sans-serif]">
+            {{ activeItem.desc }}
+          </p>
         </div>
       </div>
 
+      <!-- #906E6C 色的 “go back” 跟随光标（带 0.28s 阻尼拖曳感） -->
+      <div
+        ref="cursorRef"
+        class="pointer-events-none fixed left-0 top-0 z-[60] text-[#906E6C] text-[16px] font-semibold tracking-[0.25em] whitespace-nowrap uppercase select-none drop-shadow-sm font-sans"
+      >
+        go back
+      </div>
     </div>
-  </section>
+  </div>
 </template>

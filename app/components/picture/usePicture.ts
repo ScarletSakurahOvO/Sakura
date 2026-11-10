@@ -33,6 +33,7 @@ export function usePicture() {
   let pointerStartY = 0
   let dragStartTargetX = 0
   let dragStartTargetY = 0
+  let hasCaptured = false
 
   // 3x3 九宫格区块网格配置（中心为 [0, 0]，周边环绕 8 个区块）
   const chunkList: ChunkItem[] = [
@@ -71,15 +72,11 @@ export function usePicture() {
   // 1. 指针按下
   const handlePointerDown = (e: PointerEvent) => {
     isDragging.value = true
+    hasCaptured = false
     pointerStartX = e.clientX
     pointerStartY = e.clientY
     dragStartTargetX = targetX
     dragStartTargetY = targetY
-
-    const target = e.currentTarget as HTMLElement | null
-    if (target?.setPointerCapture) {
-      target.setPointerCapture(e.pointerId)
-    }
   }
 
   // 2. 指针移动
@@ -87,6 +84,16 @@ export function usePicture() {
     if (!isDragging.value) return
     const deltaX = e.clientX - pointerStartX
     const deltaY = e.clientY - pointerStartY
+
+    // 位移超过 5px 确认为拖拽漫游，加锁捕获指针并阻止原生 click 误触
+    if (!hasCaptured && Math.hypot(deltaX, deltaY) > 5) {
+      const target = e.currentTarget as HTMLElement | null
+      if (target?.setPointerCapture) {
+        target.setPointerCapture(e.pointerId)
+        hasCaptured = true
+      }
+    }
+
     targetX = dragStartTargetX + deltaX
     targetY = dragStartTargetY + deltaY
   }
@@ -96,15 +103,17 @@ export function usePicture() {
     if (!isDragging.value) return
     isDragging.value = false
 
-    const target = e.currentTarget as HTMLElement | null
-    if (target?.releasePointerCapture) {
-      target.releasePointerCapture(e.pointerId)
+    if (hasCaptured) {
+      const target = e.currentTarget as HTMLElement | null
+      if (target?.releasePointerCapture) {
+        target.releasePointerCapture(e.pointerId)
+      }
+      hasCaptured = false
     }
   }
 
   // 4. GSAP 逐帧动力学与九宫格无限回环
   const updatePhysics = () => {
-    // 阻尼系数
     const ease = 0.075
     currentX += (targetX - currentX) * ease
     currentY += (targetY - currentY) * ease
@@ -112,7 +121,7 @@ export function usePicture() {
     if (trackedChunks.length === 0) return
 
     for (const chunk of trackedChunks) {
-      // 计算每个区块当前的世界坐标并执行 wrap 映射
+      // 叠加 -chunk.row * 2200 实现阶梯错位
       const nominalX = chunk.col * CHUNK_W + currentX - chunk.row * 2200
       const nominalY = chunk.row * CHUNK_H + currentY
 
@@ -129,7 +138,6 @@ export function usePicture() {
 
   onMounted(() => {
     initTrackedChunks()
-    // 首帧立即计算定位，消除初始渲染重叠
     updatePhysics()
     gsap.ticker.add(updatePhysics)
   })
