@@ -3,7 +3,7 @@ import type { GalleryItem } from '../types'
 export const galmeImages: GalleryItem[] = [
   {
     id: 1,
-    src: '/images/galme1.webp',
+    src: '/images/picture/galme1.webp',
     title: '温蒂',
     desc: '风神 巴巴托斯',
     audio: '/audio/wenti.mp3',
@@ -13,7 +13,7 @@ export const galmeImages: GalleryItem[] = [
   },
   {
     id: 2,
-    src: '/images/galme2.webp',
+    src: '/images/picture/galme2.webp',
     title: '钟离',
     desc: '岩神 摩拉克斯',
     audio: '/audio/zhongli.mp3',
@@ -23,7 +23,7 @@ export const galmeImages: GalleryItem[] = [
   },
   {
     id: 3,
-    src: '/images/galme3.webp',
+    src: '/images/picture/galme3.webp',
     title: '影',
     desc: '雷神 巴尔泽布',
     audio: '/audio/ying.mp3',
@@ -33,7 +33,7 @@ export const galmeImages: GalleryItem[] = [
   },
   {
     id: 4,
-    src: '/images/galme4.webp',
+    src: '/images/picture/galme4.webp',
     title: '纳西妲',
     desc: '草神 布耶尔',
     audio: '/audio/naxida.mp3',
@@ -43,7 +43,7 @@ export const galmeImages: GalleryItem[] = [
   },
   {
     id: 5,
-    src: '/images/galme5.webp',
+    src: '/images/picture/galme5.webp',
     title: '芙宁娜',
     desc: '水神 芙卡洛斯',
     audio: '/audio/furina.mp3',
@@ -53,7 +53,7 @@ export const galmeImages: GalleryItem[] = [
   },
   {
     id: 6,
-    src: '/images/galme6.webp',
+    src: '/images/picture/galme6.webp',
     title: '玛薇卡',
     desc: '火神 玛薇卡',
     audio: '/audio/maweika.mp3',
@@ -63,7 +63,7 @@ export const galmeImages: GalleryItem[] = [
   },
   {
     id: 7,
-    src: '/images/galme7.webp',
+    src: '/images/picture/galme7.webp',
     title: '少女',
     desc: '月神 哥伦比娅',
     audio: '/audio/konobla.mp3',
@@ -73,7 +73,7 @@ export const galmeImages: GalleryItem[] = [
   },
   {
     id: 8,
-    src: '/images/galme8.webp',
+    src: '/images/picture/galme8.webp',
     title: '沃雅妮莎',
     desc: '至冬首席女高音',
     audio: '/audio/woyansha.mp3',
