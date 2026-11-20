@@ -1,12 +1,20 @@
 <script setup>
 
+import { ref } from 'vue'
+import TiltCard from './TiltCard.vue'
+import NavMenu from './NavMenu.vue'
+import NavToggle from './NavToggle.vue'
+
+const isMenuOpen = ref(false)
+
+
 useHead({
   link: [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
     {
       rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@400;600;700&family=Montserrat:wght@400;500&display=swap'
+      href: 'https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@400;600;700&family=Google+Sans+Flex:wght@500&family=Montserrat:wght@400;500&display=swap'
     }
   ]
 })
@@ -17,7 +25,7 @@ useHead({
     <!-- 第一屏：Hero 区域 -->
     <section class="sticky top-0 h-screen w-full z-0 overflow-hidden">
       <!-- logo样式 -->
-      <div class="absolute left-[60px] top-[60px]">
+      <div class="absolute left-[60px] top-[60px] z-30">
         <p class="font-['Cormorant_Upright'] text-[20px] font-normal leading-none tracking-normal text-black select-none">
           Scarlet Sakura
         </p>
@@ -27,21 +35,11 @@ useHead({
         </p>
       </div>
 
-      <!-- 中间汉堡菜单 -->
-      <button
-        type="button"
-        class="absolute left-1/2 top-[60px] -translate-x-1/2 flex items-center gap-x-[8px] font-['Cormorant_Upright'] text-[20px] font-normal leading-none tracking-normal text-black select-none cursor-pointer hover:opacity-60 transition-opacity"
-      >
-        <span class="flex h-[11px] w-[16px] flex-col justify-between">
-          <span class="h-[1px] w-full bg-black"></span>
-          <span class="h-[1px] w-full bg-black"></span>
-          <span class="h-[1px] w-full bg-black"></span>
-        </span>
-        <span>Menu</span>
-      </button>
+     <!-- 中间汉堡菜单 -->
+      <NavToggle :open="isMenuOpen" @toggle="isMenuOpen = !isMenuOpen" />
 
       <!-- 语言切换区域 -->
-      <nav class="absolute right-[158px] top-[60px] flex items-center gap-x-[5px] font-['Cormorant_Upright'] text-[20px] font-normal leading-none tracking-normal text-black select-none uppercase">
+      <nav class="absolute right-[158px] top-[60px] z-30 flex items-center gap-x-[5px] font-['Cormorant_Upright'] text-[20px] font-normal leading-none tracking-normal text-black select-none uppercase">
         <span class="cursor-pointer hover:opacity-60 transition-opacity">EN /</span>
         <span class="cursor-pointer hover:opacity-60 transition-opacity">CN /</span>
         <span class="cursor-pointer hover:opacity-60 transition-opacity">JA</span>
@@ -80,15 +78,14 @@ useHead({
       </div>
 
       <!-- 右侧主视觉插画与错位线框区域 -->
-      <div class="absolute right-[158px] top-[150px] h-[459px] w-[750px]">
-        <div class="absolute inset-0 border border-[#906E6C] pointer-events-none z-0"></div>
-        <div class="absolute left-[24px] top-[24px] h-[459px] w-[750px] overflow-hidden bg-neutral-100 shadow-sm z-10">
+      <div class="absolute right-[158px] top-[150px]">
+        <TiltCard>
           <img
             src="/images/hero/hero.webp"
             alt="Hero Illustration"
             class="h-full w-full object-cover select-none"
           />
-        </div>
+        </TiltCard>
       </div>
 
       <!-- 左下角标语文案 -->
@@ -101,6 +98,9 @@ useHead({
         <p>FIG. 01 — YURU CAMP</p>
         <p class="mt-[8px]">00:02:25 CST</p>
       </div>
+
+      <!-- 菜单呼出层 -->
+      <NavMenu :open="isMenuOpen" />
 
     </section>
   </main>
