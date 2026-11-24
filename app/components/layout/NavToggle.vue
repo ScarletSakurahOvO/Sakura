@@ -1,13 +1,14 @@
-<!-- 中间菜单 -->
-<script setup>
-defineProps({
-  open: {
-    type: Boolean,
-    default: false
-  }
+<!-- app/components/layout/NavToggle.vue -->
+<script setup lang="ts">
+withDefaults(defineProps<{
+  open?: boolean
+}>(), {
+  open: false
 })
 
-defineEmits(['toggle'])
+defineEmits<{
+  toggle: []
+}>()
 </script>
 
 <template>
