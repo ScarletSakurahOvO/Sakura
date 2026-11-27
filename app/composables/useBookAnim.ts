@@ -13,8 +13,12 @@ export function useBookAnim(itemCount: number) {
 
   const cardRefs = ref<(HTMLElement | null)[]>([])
   const coverRefs = ref<(HTMLElement | null)[]>([])
+  const leftContentRef = ref<HTMLElement | null>(null)
+  const displayIndex = ref(0)
   const isPageTransitioning = useState('isPageTransitioning', () => false)
 
+  const TRIGGER_THRESHOLD = 45 // 书封抵达静态基准位（0px）的触发容差范围
+  let activeIndex = 0
   let targetOffset = 0
   let currentOffset = 0
   let isCanvasRevealing = true
@@ -35,6 +39,29 @@ export function useBookAnim(itemCount: number) {
     }
   }
 
+  const switchLeftContent = (nextIndex: number) => {
+    const el = leftContentRef.value
+    if (!el) {
+      displayIndex.value = nextIndex
+      return
+    }
+
+    gsap.killTweensOf(el)
+    gsap.to(el, {
+      opacity: 0,
+      duration: 0.22,
+      ease: 'power2.out',
+      onComplete: () => {
+        displayIndex.value = nextIndex
+        gsap.to(el, {
+          opacity: 1,
+          duration: 0.28,
+          ease: 'power2.out'
+        })
+      }
+    })
+  }
+
   const updateCardsPosition = () => {
     cardRefs.value.forEach((el, index) => {
       if (!el) return
@@ -43,6 +70,18 @@ export function useBookAnim(itemCount: number) {
         ((((rawX - MIN_BOUND) % TOTAL_WIDTH) + TOTAL_WIDTH) % TOTAL_WIDTH) + MIN_BOUND
       el.style.transform = `translate3d(${wrappedX}px, 0, 0)`
     })
+
+    if (isCanvasRevealing || itemCount <= 0) return
+
+    const nearestStep = Math.round(-currentOffset / STEP)
+    const distanceToAnchor = Math.abs(nearestStep * STEP + currentOffset)
+    if (distanceToAnchor <= TRIGGER_THRESHOLD) {
+      const matchedIndex = ((nearestStep % itemCount) + itemCount) % itemCount
+      if (matchedIndex !== activeIndex) {
+        activeIndex = matchedIndex
+        switchLeftContent(matchedIndex)
+      }
+    }
   }
 
   const handleWheel = (e: WheelEvent) => {
@@ -118,7 +157,7 @@ export function useBookAnim(itemCount: number) {
   onUnmounted(() => {
     stopTransitionWatch?.()
     revealTl?.kill()
-    const targets = [...cardRefs.value, ...coverRefs.value].filter(
+    const targets = [...cardRefs.value, ...coverRefs.value,leftContentRef.value].filter(
       (el): el is HTMLElement => el !== null
     )
     if (targets.length) {
@@ -130,6 +169,8 @@ export function useBookAnim(itemCount: number) {
   return {
     setCardRef,
     setCoverRef,
+    leftContentRef,
+    displayIndex,
     handleWheel
   }
 }

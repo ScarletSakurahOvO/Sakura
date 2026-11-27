@@ -15,7 +15,7 @@ defineEmits<{
   <button
     type="button"
     @click="$emit('toggle')"
-    class="absolute left-1/2 top-[60px] -translate-x-1/2 z-30 flex items-center gap-x-[8px] font-['Cormorant_Upright'] text-[20px] font-normal leading-none tracking-normal text-black select-none cursor-pointer hover:opacity-60 transition-opacity"
+    class="fixed left-1/2 top-[60px] -translate-x-1/2 z-30 flex items-center gap-x-[8px] font-['Cormorant_Upright'] text-[20px] font-normal leading-none tracking-normal text-black select-none cursor-pointer hover:opacity-60 transition-opacity"
   >
     <!-- 左侧 SVG 图标：三条完全等宽等粗的横线 -> 扁平 X -->
     <svg

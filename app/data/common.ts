@@ -27,7 +27,7 @@ export const navItems = [
   },
   {
     label: 'About',
-    to: '',
+    to: '/about',
     image: '/images/hero/hero5.webp',
     words: ['Passions', 'Stories', 'Ideals']
   },
